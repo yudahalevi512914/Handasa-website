@@ -2,229 +2,192 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>603 - האתר הרשמי</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>גדוד 603 - גדוד מחץ</title>
     <style>
-        :root {
-            --primary: #f39c12;
-            --bg: #0b0e11;
-            --card: #1c2128;
-            --text: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-
+        /* עיצוב כללי */
         body {
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding-bottom: 90px;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
         }
 
-        /* עיצוב גלריה משודרג */
-        .gallery-grid {
+        /* סרגל ניווט */
+        nav {
+            background-color: #000;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #ff4500;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff4500;
+        }
+
+        /* כותרת ראשית (Hero Section) */
+        header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1580130775562-0ef927a5f606?q=80&w=1200') no-repeat center/cover;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 5px solid #808080;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            margin: 0;
+            text-shadow: 2px 2px 10px #000;
+            color: #ff4500;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            max-width: 600px;
+        }
+
+        /* תוכן מרכזי */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            border-right: 5px solid #ff4500;
+            padding-right: 15px;
+            color: #c0c0c0;
+        }
+
+        /* גלריה */
+        .gallery {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            padding: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
         }
 
-        .gallery-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-            border: 1px solid var(--glass);
-        }
-
-        .gallery-item img {
+        .gallery img {
             width: 100%;
-            height: 100%;
+            height: 200px;
             object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #444;
             transition: transform 0.3s;
         }
 
-        .gallery-item img:active {
+        .gallery img:hover {
             transform: scale(1.05);
         }
 
-        /* מודל להגדלת תמונה (Lightbox) */
-        #lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
+        /* יצירת קשר */
+        form {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
         }
 
-        #lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
-
-        /* שאר העיצוב (כמו שאהבת) */
-        .tab-content { display: none; padding: 20px; animation: slideUp 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .song-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 20px; border-right: 4px solid var(--primary); }
-        .lyrics { white-space: pre-wrap; color: #b0b8c1; line-height: 1.7; margin-top: 10px; }
-
-        .bottom-nav {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            background: rgba(28, 33, 40, 0.95); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-around; padding: 15px;
-            border-radius: 25px; border: 1px solid var(--glass); z-index: 999;
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #333;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
         }
-        .nav-item { color: #888; text-align: center; flex: 1; cursor: pointer; font-size: 0.8rem; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 1.5rem; display: block; }
+
+        button {
+            background: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #e03e00;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #000;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-<header style="text-align:center; padding: 30px;">
-    <img src="logo.png" style="width:80px; filter: drop-shadow(0 0 8px var(--primary));">
-    <h1 style="margin:10px 0 0 0;">פלוגת 603</h1>
-</header>
+    <nav>
+        <a href="#about">אודות</a>
+        <a href="#gallery">גלריה</a>
+        <a href="#contact">צור קשר</a>
+    </nav>
 
-<div id="gallery" class="tab-content active">
-    <h2 style="text-align:center; color: var(--primary);">רגעים מהמסלול</h2>
-    <div class="gallery-grid">
-        <div class="gallery-item"><img src="p1.jpg" onclick="openLightbox(this.src)"></div>
-        <div class="gallery-item"><img src="p2.jpg" onclick="openLightbox(this.src)"></div>
-        <div class="gallery-item"><img src="p3.jpg" onclick="openLightbox(this.src)"></div>
-        <div class="gallery-item"><img src="p4.jpg" onclick="openLightbox(this.src)"></div>
-        <div class="gallery-item"><img src="p5.jpg" onclick="openLightbox(this.src)"></div>
-        <div class="gallery-item"><img src="p6.jpg" onclick="openLightbox(this.src)"></div>
-    </div>
-</div>
+    <header>
+        <h1>גדוד 603 - מחץ</h1>
+        <p>פורצים את הדרך לניצחון | חיל ההנדסה הקרבית</p>
+    </header>
 
-<div id="songs" class="tab-content">
-    <h2 style="color: var(--primary);">שירי הפלוגה</h2>
-    <div class="song-card">
-        <div style="font-weight:800; font-size:1.2rem;">🎶 שיר סוגרי השבתות</div>
-        <div class="lyrics">יום רביעי, הסופ״ש כבר מורגש בידיים... [המשך השיר המלא]</div>
-    </div>
-    </div>
-
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchTab('gallery', this)"><i class="fas fa-images"></i><span>גלריה</span></div>
-    <div class="nav-item" onclick="switchTab('songs', this)"><i class="fas fa-music"></i><span>שירים</span></div>
-    <div class="nav-item" onclick="switchTab('shop', this)"><i class="fas fa-shopping-bag"></i><span>חנות</span></div>
-</nav>
-
-<div id="lightbox" onclick="this.style.display='none'"><img id="lightbox-img"></div>
-<div id="shop" class="tab-content">
-    <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px;">חנות הפלוגה</h2>
-    
-    <div class="product-grid">
+    <div class="container">
         
-        <div class="product-card">
-            <img src="shirt.jpg" class="product-img" alt="חולצת פלוגה">
-            <div class="product-details">
-                <div style="font-weight: 800;">חולצת פלוגה 603</div>
-                <div class="product-price">₪50</div>
-                <select id="size-shirt" class="size-selector">
-                    <option value="" disabled selected>בחר מידה</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                </select>
-                <button class="btn-add" onclick="addToCart('חולצת פלוגה', 50, 'size-shirt')">הוסף לסל</button>
-            </div>
-        </div>
+        <section id="about">
+            <h2>אודות הגדוד</h2>
+            <p>
+                גדוד 603, הידוע בכינויו "גדוד מחץ", הוא גדוד הנדסה קרבית סדיר הפועל תחת חטיבה 7. 
+                הגדוד מתמחה בפריצת מכשולים, חבלה, מיקוש והפעלת ציוד מכני הנדסי תחת אש. 
+                לוחמי הגדוד הם חוד החנית של צה"ל ומהווים את הכוח שמאפשר לכל שאר הצבא להתקדם בשטח האויב.
+            </p>
+        </section>
 
-        <div class="product-card">
-            <img src="hoodie.jpg" class="product-img" alt="קפוצ'ון">
-            <div class="product-details">
-                <div style="font-weight: 800;">קפוצ'ון פלוגה</div>
-                <div class="product-price">₪100</div>
-                <select id="size-hoodie" class="size-selector">
-                    <option value="" disabled selected>בחר מידה</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                </select>
-                <button class="btn-add" onclick="addToCart('קפוצ'ון פלוגה', 100, 'size-hoodie')">הוסף לסל</button>
+        <section id="gallery">
+            <h2>גלריית לוחמים</h2>
+            <div class="gallery">
+                <img src="https://images.unsplash.com/photo-1590402444811-bfee29d17d82?q=80&w=400" alt="אימון 1">
+                <img src="https://images.unsplash.com/photo-1579935110378-81262796945f?q=80&w=400" alt="אימון 2">
+                <img src="https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?q=80&w=400" alt="אימון 3">
             </div>
-        </div>
+        </section>
 
-        <div class="product-card">
-            <img src="hat.jpg" class="product-img" alt="כובע">
-            <div class="product-details">
-                <div style="font-weight: 800;">כובע פלוגה</div>
-                <div class="product-price">₪35</div>
-                <button class="btn-add" onclick="addToCart('כובע פלוגה', 35)">הוסף לסל</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="patch.jpg" class="product-img" alt="פאצ'">
-            <div class="product-details">
-                <div style="font-weight: 800;">פאצ' גדוד 603</div>
-                <div class="product-price">₪20</div>
-                <button class="btn-add" onclick="addToCart('פאצ\' פלוגה', 20)">הוסף לסל</button>
-            </div>
-        </div>
+        <section id="contact">
+            <h2>צור קשר</h2>
+            <p>יש לכם שאלות? רוצים לדעת עוד על הגדוד? השאירו פרטים:</p>
+            <form>
+                <input type="text" placeholder="שם מלא" required>
+                <input type="email" placeholder="אימייל" required>
+                <textarea rows="5" placeholder="ההודעה שלך..."></textarea>
+                <button type="submit">שלח הודעה</button>
+            </form>
+        </section>
 
     </div>
-</div>
 
-<style>
-    /* עיצוב בחירת המידה */
-    .size-selector {
-        width: 100%;
-        padding: 8px;
-        margin-top: 10px;
-        background: #2c3138;
-        color: white;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-family: 'Assistant', sans-serif;
-    }
-</style>
-
-<script>
-    // לוגיקה מעודכנת להוספה לסל עם מידה
-    function addToCart(name, price, sizeId = null) {
-        let size = "";
-        if (sizeId) {
-            const select = document.getElementById(sizeId);
-            size = select.value;
-            if (!size) {
-                alert("בבקשה בחר מידה!");
-                return;
-            }
-        }
-
-        const itemDisplayName = size ? `${name} (מידה: ${size})` : name;
-        cart.push({ name: itemDisplayName, price: price });
-        updateCart();
-        
-        // פידבק ויזואלי
-        alert(`${itemDisplayName} נוסף לסל!`);
-    }
-</script>
-
-<script>
-    function switchTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    function openLightbox(src) {
-        document.getElementById('lightbox-img').src = src;
-        document.getElementById('lightbox').style.display = 'flex';
-    }
-</script>
+    <footer>
+        &copy; 2024 כל הזכויות שמורות - אתר גדוד 603 | תמיד בראש
+    </footer>
 
 </body>
 </html>
