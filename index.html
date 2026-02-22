@@ -2,279 +2,374 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>פלוגת הנדסה 603</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>603 - סיירת פלוגת הנדסה</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #f39c12; /* כתום הנדסה */
-            --dark-bg: #121212;
-            --card-bg: #1e1e1e;
+            --primary: #ff9f1c;
+            --accent: #ffbf69;
+            --bg: #0b0e11;
+            --card: #1b1f24;
             --text: #ffffff;
-            --gray: #b0b0b0;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: 'Assistant', sans-serif;
-            background-color: var(--dark-bg);
+            background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding-bottom: 80px; /* רווח לתפריט התחתון */
-            overflow-x: hidden;
+            padding-bottom: 90px;
+            line-height: 1.6;
         }
 
-        /* תפריט עליון קבוע */
+        /* Header */
         header {
-            background: var(--card-bg);
-            padding: 15px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            padding: 30px 20px;
             text-align: center;
-            border-bottom: 2px solid var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
 
-        .main-logo {
-            height: 50px;
+        .logo-img {
+            width: 100px;
+            filter: drop-shadow(0 0 10px var(--primary));
+            margin-bottom: 10px;
         }
 
-        /* ניהול טאבים - הצגה/הסתרה */
-        .tab-content {
-            display: none;
-            padding: 20px;
-            animation: fadeIn 0.4s ease;
-        }
+        /* Tab Logic */
+        .tab-content { display: none; animation: slideUp 0.4s ease-out; padding: 0 20px; }
+        .tab-content.active { display: block; }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* עיצוב שירים (כמו שביקשת - טקסטואלי ומעוצב) */
-        .song-box {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-right: 4px solid var(--primary);
+        /* Songs Style */
+        .song-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--glass);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .song-title {
+        .song-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
             color: var(--primary);
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 800;
         }
 
-        .song-lyrics {
-            white-space: pre-line;
-            line-height: 1.8;
-            font-size: 1.05rem;
-            color: var(--gray);
+        .lyrics {
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+            color: var(--text-muted);
+            border-right: 2px solid var(--primary);
+            padding-right: 15px;
         }
 
-        .highlight-song {
-            background: linear-gradient(145deg, #1e1e1e, #2c2c2c);
-            border: 1px solid var(--primary);
-        }
+        .lyrics b { color: var(--text); }
 
-        /* גלריה */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .gallery-item {
-            width: 100%;
-            height: 150px;
-            background: #333;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        /* חנות */
+        /* Store Style */
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .product-card {
-            background: var(--card-bg);
+            background: var(--card);
             border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 20px;
-            text-align: center;
+            position: relative;
         }
 
-        .product-img {
+        .product-img { width: 100%; height: 160px; object-fit: cover; }
+        .product-info { padding: 12px; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+        
+        .add-btn {
+            background: var(--primary);
+            border: none;
+            color: black;
             width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 15px;
-        }
-
-        /* תפריט תחתון (כמו באפליקציה) */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: var(--card-bg);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            border-top: 1px solid #333;
-            z-index: 1000;
-        }
-
-        .nav-item {
-            color: var(--gray);
-            text-decoration: none;
-            font-size: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 10px;
             cursor: pointer;
         }
 
-        .nav-item i {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
+        /* Cart UI */
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: red;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
         }
 
-        .nav-item.active {
-            color: var(--primary);
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(27, 31, 36, 0.9);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            border-radius: 25px;
+            border: 1px solid var(--glass);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            z-index: 2000;
         }
 
-        h2 { text-align: center; color: var(--primary); }
+        .nav-item {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.75rem;
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+        .nav-item.active { color: var(--primary); transform: translateY(-5px); }
+
+        /* Cart Tab */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            background: var(--glass);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkout-btn {
+            background: #25d366; /* WhatsApp Green */
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            border: none;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="logo.png" alt="603 Logo" class="main-logo">
+    <img src="logo.png" class="logo-img" alt="603">
+    <h1 style="margin:0; font-weight:800;">פלוגת 603</h1>
+    <p style="color: var(--text-muted);">סיירת ההנדסה של הגדוד</p>
 </header>
 
 <div id="home" class="tab-content active">
-    <h2>פלוגת הנדסה 603</h2>
-    <div class="song-box" style="text-align: center;">
-        <p>ברוכים הבאים לאתר הפלוגה הרשמי.</p>
-        <p>כאן תוכלו למצוא את כל המורלים, השירים והתמונות מהשירות.</p>
+    <div class="song-card" style="text-align: center;">
+        <h2>חדשות הפלוגה</h2>
+        <p>האתר הרשמי מעודכן. כל השירים, המורלים והציוד במקום אחד.</p>
     </div>
-    <div class="gallery-grid">
-        <img src="photo1.jpg" class="gallery-item">
-        <img src="photo2.jpg" class="gallery-item">
+    <div class="product-grid">
+        <img src="photo1.jpg" style="width:100%; border-radius:15px;" onclick="switchTab('gallery')">
+        <img src="photo2.jpg" style="width:100%; border-radius:15px;" onclick="switchTab('gallery')">
     </div>
 </div>
 
 <div id="songs" class="tab-content">
-    <h2>שירי הפלוגה</h2>
-    
-    <div class="song-box highlight-song">
-        <div class="song-title">🎶 שיר סוגרי השבתות</div>
-        <div class="song-lyrics">
-            יום רביעי, הסופ״ש כבר מורגש בידיים 
-            מדי א בשלוף בארון...
-            [כל הטקסט הארוך שנתת לי]
+    <h2 style="padding-right:10px;">שירי פלוגה ומורלים</h2>
+
+    <div class="song-card">
+        <div class="song-header"><i class="fas fa-star"></i> שיר סוגרי השבתות</div>
+        <div class="lyrics">
+<b>יום רביעי, הסופ״ש כבר מורגש בידיים</b>
+מדי א בשלוף בארון, הסמל אומר תכין כומתה תגלחצ נעליים
+אתה עולה משפט למ״פ אתה נכנס הנה יום הדין הגיע.
+פתאום אני טיפה לחוץ שולף תירוץ אחרי תירוץ על המפ זה לא משפיע
+
+<b>בהלצ שישי בצהריים</b>
+סופ שבוע זה רק אני בס והממ של שתיים
+כל הנבחרים פה בפלוגה
+התחצפות כוננות והפקרה אחד גם על חצי מימיה
+הנה עוד שיחה מאמא
+יא איבני איך אתה תלמד
+לא מטווסים עם כל אחד
+השארת אותנו פה לבד…
+
+<b>יום ראשון</b>
+אמא אומרת הגזמת
+תיזהר
+השבת אצל סבא וסבתא
+אני אומר לה תירגעי
+השבוע אני נקי
+לא יהיה פה שום אירוע
+
+כל השבוע אני ספץ פתאום המפקד שוב מתפוצץ
+בסהכ רציתי פיצה
         </div>
     </div>
 
-    <div class="song-box">
-        <div class="song-title">👑 שיר למ״פ</div>
-        <div class="song-lyrics">
-            טירונות הנפצות ואבנונים...
-            נעלמו החדולים מהפלוגה
+    <div class="song-card">
+        <div class="song-header"><i class="fas fa-user-shield"></i> שיר למ״פ</div>
+        <div class="lyrics">
+טירונות הנפצות ואבנונים
+חצי פלוגה פה חדולים
+המפ מנפיץ את המפקדים
+גם אם נראה שהשחר לא יפציע לעולם
+הנה בא מ״פ חדש
+גם אם זה נראה שהשחר לא יפציע לעולם
+יאללה כולם תעשו כאן רעש
+
+<b>מ״פ נעול, חולה על בית</b>
+יושב לו בול במדים של זית
+אין בלבולי מח הוא נשבע
+נעלמו החדולים מהפלוגה
         </div>
     </div>
 
-    <div class="song-box">
-        <div class="song-title">🐀 שיר למ״מ</div>
-        <div class="song-lyrics">
-            היה היה מ״מ , קראו לו העכבר...
-            אווו הוא עולה לגדוד!
+    <div class="song-card">
+        <div class="song-header"><i class="fas fa-mouse"></i> שיר למ״מ (העכבר)</div>
+        <div class="lyrics">
+היה היה מ״מ , קראו לו העכבר, 
+תפקיד אחרי תפקיד בבהלת תמיד היום כל זה נגמר x2. 
+<b>אווו הוא עולה לגדוד הוא עולה לגדוד!</b>
         </div>
     </div>
 
-    <div class="song-box">
-        <div class="song-title">📢 המפקד אמיר</div>
-        <div class="song-lyrics">המפקד אמיר, יאללה המפקד אמיר...</div>
-    </div>
-</div>
-
-<div id="gallery" class="tab-content">
-    <h2>גלריה</h2>
-    <div style="text-align: center; margin-bottom: 15px;">
-        <a href="https://photos.app.goo.gl/5qhGATrkQkBFjh726" target="_blank" style="color: var(--primary);">פתח אלבום מלא בגוגל פוטוס</a>
-    </div>
-    <div class="gallery-grid">
-        <img src="photo1.jpg" class="gallery-item">
-        <img src="photo2.jpg" class="gallery-item">
-        <img src="photo3.jpg" class="gallery-item">
-        <img src="photo4.jpg" class="gallery-item">
+    <div class="song-card">
+        <div class="song-header"><i class="fas fa-users"></i> מחלקה 4</div>
+        <div class="lyrics">
+מחלקה 4 יאללה מחלקה 4 
+יאללה מחלקה 4 יאללה מחלקה 4 
+יותר חזק מחלקה 4 
+יאללה מחלקה 4!
+        </div>
     </div>
 </div>
 
 <div id="shop" class="tab-content">
-    <h2>חנות מוצרים</h2>
-    <div class="product-card">
-        <img src="product1.jpg" class="product-img">
-        <div class="product-info">
-            <h3>חולצת סוף מסלול</h3>
-            <p>₪50</p>
+    <h2>חנות הפלוגה</h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="product1.jpg" class="product-img">
+            <div class="product-info">
+                <div>חולצת פלוגה</div>
+                <div class="price">₪55</div>
+                <button class="add-btn" onclick="addToCart('חולצת פלוגה', 55)">הוסף לסל</button>
+            </div>
         </div>
-    </div>
-    <div class="product-card">
-        <img src="product2.jpg" class="product-img">
-        <div class="product-info">
-            <h3>כובע פלוגה</h3>
-            <p>₪30</p>
+        <div class="product-card">
+            <img src="product2.jpg" class="product-img">
+            <div class="product-info">
+                <div>כובע הנדסה</div>
+                <div class="price">₪35</div>
+                <button class="add-btn" onclick="addToCart('כובע הנדסה', 35)">הוסף לסל</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="bottom-nav">
-    <div class="nav-item active" onclick="openTab('home', this)">
+<div id="cart" class="tab-content">
+    <h2>ההזמנה שלך</h2>
+    <div id="cart-items">
+        </div>
+    <hr style="border: 0.5px solid var(--glass); margin: 20px 0;">
+    <div style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold;">
+        <span>סה"כ:</span>
+        <span id="total-price">₪0</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">
+        <i class="fab fa-whatsapp"></i> שלח הזמנה בוואטסאפ
+    </button>
+</div>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('home', this)">
         <i class="fas fa-home"></i>
         <span>בית</span>
     </div>
-    <div class="nav-item" onclick="openTab('songs', this)">
+    <div class="nav-item" onclick="switchTab('songs', this)">
         <i class="fas fa-music"></i>
-        <span>שירי פלוגה</span>
+        <span>שירים</span>
     </div>
-    <div class="nav-item" onclick="openTab('gallery', this)">
-        <i class="fas fa-images"></i>
-        <span>גלריה</span>
-    </div>
-    <div class="nav-item" onclick="openTab('shop', this)">
-        <i class="fas fa-shopping-cart"></i>
+    <div class="nav-item" onclick="switchTab('shop', this)">
+        <i class="fas fa-shopping-bag"></i>
         <span>חנות</span>
     </div>
-</div>
+    <div class="nav-item" onclick="switchTab('cart', this)">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count" class="cart-badge" style="display:none;">0</span>
+        <span>עגלה</span>
+    </div>
+</nav>
 
 <script>
-    function openTab(tabName, elmnt) {
-        // הסתרת כל הטאבים
-        var i, tabcontent, navitems;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].classList.remove("active");
-        }
+    let cart = [];
 
-        // הסרת עיצוב פעיל מהכפתורים
-        navitems = document.getElementsByClassName("nav-item");
-        for (i = 0; i < navitems.length; i++) {
-            navitems[i].classList.remove("active");
-        }
-
-        // הצגת הטאב הנבחר והוספת עיצוב לכפתור
-        document.getElementById(tabName).classList.add("active");
-        elmnt.classList.add("active");
+    function switchTab(tabId, el) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
         
-        // גלילה לראש הדף במעבר
-        window.scrollTo(0, 0);
+        if(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
+        window.scrollTo(0,0);
+    }
+
+    function addToCart(name, price) {
+        cart.push({name, price});
+        updateCart();
+        // אנימציית פידבק קטנה
+        const badge = document.getElementById('cart-count');
+        badge.style.transform = 'scale(1.5)';
+        setTimeout(() => badge.style.transform = 'scale(1)', 200);
+    }
+
+    function updateCart() {
+        const cartList = document.getElementById('cart-items');
+        const countBadge = document.getElementById('cart-count');
+        const totalEl = document.getElementById('total-price');
+        
+        cartList.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            total += item.price;
+            cartList.innerHTML += `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>₪${item.price}</span>
+                </div>
+            `;
+        });
+
+        countBadge.innerText = cart.length;
+        countBadge.style.display = cart.length > 0 ? 'block' : 'none';
+        totalEl.innerText = `₪${total}`;
+    }
+
+    function checkout() {
+        if(cart.length === 0) return alert('העגלה ריקה!');
+        
+        let text = "אהלן, אני רוצה להזמין:\n";
+        cart.forEach(item => text += `- ${item.name} (${item.price}₪)\n`);
+        text += `\n*סה"כ לתשלום: ${document.getElementById('total-price').innerText}*`;
+        
+        const url = `https://wa.me/972500000000?text=${encodeURIComponent(text)}`; // שנה למספר האמיתי
+        window.open(url, '_blank');
     }
 </script>
 
