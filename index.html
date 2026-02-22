@@ -1,377 +1,95 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>603 - סיירת פלוגת הנדסה</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #ff9f1c;
-            --accent: #ffbf69;
-            --bg: #0b0e11;
-            --card: #1b1f24;
-            --text: #ffffff;
-            --text-muted: #a0a0a0;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body {
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding-bottom: 90px;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        .logo-img {
-            width: 100px;
-            filter: drop-shadow(0 0 10px var(--primary));
-            margin-bottom: 10px;
-        }
-
-        /* Tab Logic */
-        .tab-content { display: none; animation: slideUp 0.4s ease-out; padding: 0 20px; }
-        .tab-content.active { display: block; }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Songs Style */
-        .song-card {
-            background: var(--card);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid var(--glass);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .song-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            color: var(--primary);
-            font-size: 1.4rem;
-            font-weight: 800;
-        }
-
-        .lyrics {
-            font-size: 1.1rem;
-            white-space: pre-wrap;
-            color: var(--text-muted);
-            border-right: 2px solid var(--primary);
-            padding-right: 15px;
-        }
-
-        .lyrics b { color: var(--text); }
-
-        /* Store Style */
-        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .product-card {
-            background: var(--card);
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .product-img { width: 100%; height: 160px; object-fit: cover; }
-        .product-info { padding: 12px; }
-        .price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
-        
-        .add-btn {
-            background: var(--primary);
-            border: none;
-            color: black;
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        /* Cart UI */
-        .cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -10px;
-            background: red;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 50%;
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background: rgba(27, 31, 36, 0.9);
-            backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            border-radius: 25px;
-            border: 1px solid var(--glass);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            z-index: 2000;
-        }
-
-        .nav-item {
-            color: var(--text-muted);
-            text-align: center;
-            font-size: 0.75rem;
-            transition: 0.3s;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
-        .nav-item.active { color: var(--primary); transform: translateY(-5px); }
-
-        /* Cart Tab */
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            background: var(--glass);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .checkout-btn {
-            background: #25d366; /* WhatsApp Green */
-            color: white;
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            border: none;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <img src="logo.png" class="logo-img" alt="603">
-    <h1 style="margin:0; font-weight:800;">פלוגת 603</h1>
-    <p style="color: var(--text-muted);">סיירת ההנדסה של הגדוד</p>
-</header>
-
-<div id="home" class="tab-content active">
-    <div class="song-card" style="text-align: center;">
-        <h2>חדשות הפלוגה</h2>
-        <p>האתר הרשמי מעודכן. כל השירים, המורלים והציוד במקום אחד.</p>
-    </div>
-    <div class="product-grid">
-        <img src="photo1.jpg" style="width:100%; border-radius:15px;" onclick="switchTab('gallery')">
-        <img src="photo2.jpg" style="width:100%; border-radius:15px;" onclick="switchTab('gallery')">
-    </div>
-</div>
-
-<div id="songs" class="tab-content">
-    <h2 style="padding-right:10px;">שירי פלוגה ומורלים</h2>
-
-    <div class="song-card">
-        <div class="song-header"><i class="fas fa-star"></i> שיר סוגרי השבתות</div>
-        <div class="lyrics">
-<b>יום רביעי, הסופ״ש כבר מורגש בידיים</b>
-מדי א בשלוף בארון, הסמל אומר תכין כומתה תגלחצ נעליים
-אתה עולה משפט למ״פ אתה נכנס הנה יום הדין הגיע.
-פתאום אני טיפה לחוץ שולף תירוץ אחרי תירוץ על המפ זה לא משפיע
-
-<b>בהלצ שישי בצהריים</b>
-סופ שבוע זה רק אני בס והממ של שתיים
-כל הנבחרים פה בפלוגה
-התחצפות כוננות והפקרה אחד גם על חצי מימיה
-הנה עוד שיחה מאמא
-יא איבני איך אתה תלמד
-לא מטווסים עם כל אחד
-השארת אותנו פה לבד…
-
-<b>יום ראשון</b>
-אמא אומרת הגזמת
-תיזהר
-השבת אצל סבא וסבתא
-אני אומר לה תירגעי
-השבוע אני נקי
-לא יהיה פה שום אירוע
-
-כל השבוע אני ספץ פתאום המפקד שוב מתפוצץ
-בסהכ רציתי פיצה
-        </div>
-    </div>
-
-    <div class="song-card">
-        <div class="song-header"><i class="fas fa-user-shield"></i> שיר למ״פ</div>
-        <div class="lyrics">
-טירונות הנפצות ואבנונים
-חצי פלוגה פה חדולים
-המפ מנפיץ את המפקדים
-גם אם נראה שהשחר לא יפציע לעולם
-הנה בא מ״פ חדש
-גם אם זה נראה שהשחר לא יפציע לעולם
-יאללה כולם תעשו כאן רעש
-
-<b>מ״פ נעול, חולה על בית</b>
-יושב לו בול במדים של זית
-אין בלבולי מח הוא נשבע
-נעלמו החדולים מהפלוגה
-        </div>
-    </div>
-
-    <div class="song-card">
-        <div class="song-header"><i class="fas fa-mouse"></i> שיר למ״מ (העכבר)</div>
-        <div class="lyrics">
-היה היה מ״מ , קראו לו העכבר, 
-תפקיד אחרי תפקיד בבהלת תמיד היום כל זה נגמר x2. 
-<b>אווו הוא עולה לגדוד הוא עולה לגדוד!</b>
-        </div>
-    </div>
-
-    <div class="song-card">
-        <div class="song-header"><i class="fas fa-users"></i> מחלקה 4</div>
-        <div class="lyrics">
-מחלקה 4 יאללה מחלקה 4 
-יאללה מחלקה 4 יאללה מחלקה 4 
-יותר חזק מחלקה 4 
-יאללה מחלקה 4!
-        </div>
-    </div>
-</div>
-
 <div id="shop" class="tab-content">
-    <h2>חנות הפלוגה</h2>
+    <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px;">חנות הפלוגה</h2>
+    
     <div class="product-grid">
+        
         <div class="product-card">
-            <img src="product1.jpg" class="product-img">
-            <div class="product-info">
-                <div>חולצת פלוגה</div>
-                <div class="price">₪55</div>
-                <button class="add-btn" onclick="addToCart('חולצת פלוגה', 55)">הוסף לסל</button>
+            <img src="shirt.jpg" class="product-img" alt="חולצת פלוגה">
+            <div class="product-details">
+                <div style="font-weight: 800;">חולצת פלוגה 603</div>
+                <div class="product-price">₪50</div>
+                <select id="size-shirt" class="size-selector">
+                    <option value="" disabled selected>בחר מידה</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+                <button class="btn-add" onclick="addToCart('חולצת פלוגה', 50, 'size-shirt')">הוסף לסל</button>
             </div>
         </div>
+
         <div class="product-card">
-            <img src="product2.jpg" class="product-img">
-            <div class="product-info">
-                <div>כובע הנדסה</div>
-                <div class="price">₪35</div>
-                <button class="add-btn" onclick="addToCart('כובע הנדסה', 35)">הוסף לסל</button>
+            <img src="hoodie.jpg" class="product-img" alt="קפוצ'ון">
+            <div class="product-details">
+                <div style="font-weight: 800;">קפוצ'ון פלוגה</div>
+                <div class="product-price">₪100</div>
+                <select id="size-hoodie" class="size-selector">
+                    <option value="" disabled selected>בחר מידה</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+                <button class="btn-add" onclick="addToCart('קפוצ'ון פלוגה', 100, 'size-hoodie')">הוסף לסל</button>
             </div>
         </div>
+
+        <div class="product-card">
+            <img src="hat.jpg" class="product-img" alt="כובע">
+            <div class="product-details">
+                <div style="font-weight: 800;">כובע פלוגה</div>
+                <div class="product-price">₪35</div>
+                <button class="btn-add" onclick="addToCart('כובע פלוגה', 35)">הוסף לסל</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="patch.jpg" class="product-img" alt="פאצ'">
+            <div class="product-details">
+                <div style="font-weight: 800;">פאצ' גדוד 603</div>
+                <div class="product-price">₪20</div>
+                <button class="btn-add" onclick="addToCart('פאצ\' פלוגה', 20)">הוסף לסל</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<div id="cart" class="tab-content">
-    <h2>ההזמנה שלך</h2>
-    <div id="cart-items">
-        </div>
-    <hr style="border: 0.5px solid var(--glass); margin: 20px 0;">
-    <div style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold;">
-        <span>סה"כ:</span>
-        <span id="total-price">₪0</span>
-    </div>
-    <button class="checkout-btn" onclick="checkout()">
-        <i class="fab fa-whatsapp"></i> שלח הזמנה בוואטסאפ
-    </button>
-</div>
-
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchTab('home', this)">
-        <i class="fas fa-home"></i>
-        <span>בית</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('songs', this)">
-        <i class="fas fa-music"></i>
-        <span>שירים</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('shop', this)">
-        <i class="fas fa-shopping-bag"></i>
-        <span>חנות</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('cart', this)">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count" class="cart-badge" style="display:none;">0</span>
-        <span>עגלה</span>
-    </div>
-</nav>
+<style>
+    /* עיצוב בחירת המידה */
+    .size-selector {
+        width: 100%;
+        padding: 8px;
+        margin-top: 10px;
+        background: #2c3138;
+        color: white;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: 'Assistant', sans-serif;
+    }
+</style>
 
 <script>
-    let cart = [];
-
-    function switchTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        
-        if(el) {
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
+    // לוגיקה מעודכנת להוספה לסל עם מידה
+    function addToCart(name, price, sizeId = null) {
+        let size = "";
+        if (sizeId) {
+            const select = document.getElementById(sizeId);
+            size = select.value;
+            if (!size) {
+                alert("בבקשה בחר מידה!");
+                return;
+            }
         }
-        window.scrollTo(0,0);
-    }
 
-    function addToCart(name, price) {
-        cart.push({name, price});
+        const itemDisplayName = size ? `${name} (מידה: ${size})` : name;
+        cart.push({ name: itemDisplayName, price: price });
         updateCart();
-        // אנימציית פידבק קטנה
-        const badge = document.getElementById('cart-count');
-        badge.style.transform = 'scale(1.5)';
-        setTimeout(() => badge.style.transform = 'scale(1)', 200);
-    }
-
-    function updateCart() {
-        const cartList = document.getElementById('cart-items');
-        const countBadge = document.getElementById('cart-count');
-        const totalEl = document.getElementById('total-price');
         
-        cartList.innerHTML = '';
-        let total = 0;
-
-        cart.forEach((item, index) => {
-            total += item.price;
-            cartList.innerHTML += `
-                <div class="cart-item">
-                    <span>${item.name}</span>
-                    <span>₪${item.price}</span>
-                </div>
-            `;
-        });
-
-        countBadge.innerText = cart.length;
-        countBadge.style.display = cart.length > 0 ? 'block' : 'none';
-        totalEl.innerText = `₪${total}`;
-    }
-
-    function checkout() {
-        if(cart.length === 0) return alert('העגלה ריקה!');
-        
-        let text = "אהלן, אני רוצה להזמין:\n";
-        cart.forEach(item => text += `- ${item.name} (${item.price}₪)\n`);
-        text += `\n*סה"כ לתשלום: ${document.getElementById('total-price').innerText}*`;
-        
-        const url = `https://wa.me/972500000000?text=${encodeURIComponent(text)}`; // שנה למספר האמיתי
-        window.open(url, '_blank');
+        // פידבק ויזואלי
+        alert(`${itemDisplayName} נוסף לסל!`);
     }
 </script>
-
-</body>
-</html>
